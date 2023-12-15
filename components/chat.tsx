@@ -63,6 +63,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
         {messages.length ? (
           <>
             <ChatList messages={messages} />
+            {/* 聊天框滚动锚点。用于将打印出来的response能保持始终在可是区域内 */}
             <ChatScrollAnchor trackVisibility={isLoading} />
           </>
         ) : (
