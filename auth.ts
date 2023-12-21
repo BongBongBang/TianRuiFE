@@ -16,20 +16,26 @@ export const {
 } = NextAuth({
   providers: [GitHub],
   callbacks: {
-    jwt({ token, profile }) {
-      if (profile) {
-        token.id = profile.id
-        token.image = profile.avatar_url || profile.picture
-      }
-      return token
+    jwt(params) {
+    // jwt({ token, profile }) {
+      console.log('jwt', params);
+      return params.token
+      // if (profile) {
+      //   token.id = profile.id
+      //   token.image = profile.avatar_url || profile.picture
+      // }
+      // return token
     },
+    // This callback is called whenever a session is checked
     session: ({ session, token }) => {
+      console.log('session', session, token);
       if (session?.user && token?.id) {
         session.user.id = String(token.id)
       }
       return session
     },
-    authorized({ auth }) {
+    authorized({ request, auth }) {
+      console.log('authorized', request, auth);
       return !!auth?.user // this ensures there is a logged in user for -every- request
     }
   },

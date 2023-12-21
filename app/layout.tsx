@@ -34,6 +34,7 @@ interface RootLayoutProps {
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {
+  console.log('root-layout');
   return (
     <html lang="en" suppressHydrationWarning>
       <body
