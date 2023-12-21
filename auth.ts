@@ -14,11 +14,12 @@ export const {
   handlers: { GET, POST },
   auth
 } = NextAuth({
+  secret: 'alkdsjfklasjdlk1',
   providers: [GitHub],
   callbacks: {
     jwt(params) {
     // jwt({ token, profile }) {
-      console.log('jwt', params);
+      console.log('jwt---\n', params);
       return params.token
       // if (profile) {
       //   token.id = profile.id
@@ -28,14 +29,14 @@ export const {
     },
     // This callback is called whenever a session is checked
     session: ({ session, token }) => {
-      console.log('session', session, token);
+      console.log('session--\n', session, token);
       if (session?.user && token?.id) {
         session.user.id = String(token.id)
       }
       return session
     },
     authorized({ request, auth }) {
-      console.log('authorized', request, auth);
+      console.log('authorized--\n', request, auth);
       return !!auth?.user // this ensures there is a logged in user for -every- request
     }
   },
