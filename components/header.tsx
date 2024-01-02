@@ -22,9 +22,7 @@ import { SidebarToggle } from './sidebar-toggle'
 import { ChatHistory } from './chat-history'
 
 async function UserOrLogin() {
-  console.log('header:UserOrLoginStart');
   const session = await auth()
-  console.log('header:UserOrLoginEnd', session);
   return (
     <>
       {session?.user ? (

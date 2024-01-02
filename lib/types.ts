@@ -1,5 +1,11 @@
 import { type Message } from 'ai'
 
+export type ServerResult<T> = {
+    code: number,
+    message: string,
+    data: T
+}
+
 export interface Chat extends Record<string, any> {
   id: string
   title: string
