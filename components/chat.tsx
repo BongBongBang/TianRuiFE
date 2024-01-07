@@ -29,7 +29,6 @@ export interface ChatProps extends React.ComponentProps<'div'> {
 }
 
 export function Chat({ id, initialMessages, className }: ChatProps) {
-  console.log('chat');
   const router = useRouter()
   const path = usePathname()
   const [previewToken, setPreviewToken] = useLocalStorage<string | null>(

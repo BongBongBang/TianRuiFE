@@ -5,7 +5,6 @@ interface ChatLayoutProps {
 }
 
 export default async function ChatLayout({ children }: ChatLayoutProps) {
-  console.log('chat/layout');
   return (
     <div className="relative flex h-[calc(100vh_-_theme(spacing.16))] overflow-hidden">
       {/* @ts-ignore */}

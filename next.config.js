@@ -1,13 +1,14 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
-  images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'avatars.githubusercontent.com',
-        port: '',
-        pathname: '**',
-      },
-    ],
-  },
+    reactStrictMode: false,
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'mp.weixin.qq.com',
+                port: '',
+                pathname: '**',
+            },
+        ],
+    },
 };
