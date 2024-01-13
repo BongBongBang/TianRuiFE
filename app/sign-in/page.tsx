@@ -16,7 +16,7 @@ type CheckScanStateResult = {
 export default function SignInPage() {
     const session = useSession();
     // redirect to home if user is already logged in
-    if (session?.user) {
+    if (session?.data?.user) {
         redirect('/')
     }
 
