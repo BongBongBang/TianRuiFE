@@ -8,8 +8,6 @@ import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import * as Tabs from '@radix-ui/react-tabs';
 import { WechatOutlined } from '@ant-design/icons';
-import { useSession } from 'next-auth/react';
-import { Session } from 'next-auth/types';
 
 type FetchQrCodeResult = {
     ticket: string,
@@ -18,7 +16,9 @@ type FetchQrCodeResult = {
 };
 
 type CheckScanStateResult = {
-    state: number
+    state: number,
+    token: string,
+    expire: string
 };
 
 export function LoginQrCodeForm({
@@ -30,9 +30,6 @@ export function LoginQrCodeForm({
     const timer = useRef<number>();
     const [qrCode, setQrCode] = useState("");
     const router = useRouter();
-    const { update, status } = useSession();
-
-    console.log('status', status);
 
     useEffect(() => {
 
@@ -51,7 +48,6 @@ export function LoginQrCodeForm({
                     if (scanStateResult.data.state == 1) {
                         window.clearInterval(timer?.current);
                         router.push('/');
-                        update({name: 'AAron'})
                     }
                 }, 3000);
                 timer.current = _timer;

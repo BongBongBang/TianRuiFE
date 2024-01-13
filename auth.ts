@@ -1,7 +1,6 @@
 import NextAuth, { type DefaultSession } from 'next-auth'
 import { NextResponse } from 'next/server'
 import GitHub from 'next-auth/providers/github'
-import CredentialsProvider from 'next-auth/providers/credentials';
 import { BASE_URL } from './lib/utils';
 import path from 'path';
 
@@ -19,7 +18,22 @@ export const {
     auth
 } = NextAuth({
     secret: 'alkdsjfklasjdlk1',
-    providers: [GitHub],
+    providers: [{
+        id: 'official-account',
+        name: '公众号登录',
+        type: 'oauth',
+        checks: ['none'],
+        authorization: 'http://localhost:8080/check_scan_state?sceneId=1',
+        token: "http://localhost:8080/check_scan_state",
+        clientId: 'next',
+        clientSecret: 'next-secret',
+        userinfo: {
+            url: 'http://localhost:8080/check_scan_state?sceneId=3',
+            async request(context : any) {
+                console.log(context);
+            }
+        }
+    }],
 
     session: {
         strategy: 'jwt'
@@ -42,11 +56,11 @@ export const {
             return session
         },
         authorized({ request, auth }) {
-            console.log('authorized', auth);
             const { pathname } = request.nextUrl;
             if (pathname == "/sign-in") {
                 return true;
             }
+            console.log('authorized', pathname);
             // return true
             // const response = await fetch(`${BASE_URL}/check_session`, {
                 // method: "GET",
@@ -60,7 +74,7 @@ export const {
             // return true;
         },
     },
-    pages: {
-        signIn: '/sign-in'
-    }
+    // pages: {
+    //     signIn: '/sign-in'
+    // }
 })
