@@ -5,9 +5,11 @@ import { ServerResult } from '@/lib/types';
 import { BASE_URL, cn } from '@/lib/utils'
 import Image from 'next/image';
 import { useEffect, useState, useRef } from 'react';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import * as Tabs from '@radix-ui/react-tabs';
 import { WechatOutlined } from '@ant-design/icons';
+import { useSession } from 'next-auth/react';
+import { Session } from 'next-auth/types';
 
 type FetchQrCodeResult = {
     ticket: string,
@@ -27,7 +29,10 @@ export function LoginQrCodeForm({
 }: Partial<HTMLImageElement>) {
     const timer = useRef<number>();
     const [qrCode, setQrCode] = useState("");
-    const [sceneId, setSceneId] = useState<string>();
+    const router = useRouter();
+    const { update, status } = useSession();
+
+    console.log('status', status);
 
     useEffect(() => {
 
@@ -37,17 +42,16 @@ export function LoginQrCodeForm({
                 method: 'GET'
             })
             const result: ServerResult<FetchQrCodeResult> = await response.json();
-            console.log('fetch_qr_code', result);
 
             if (result.code == 0) {
                 setQrCode(result.data.url);
-                setSceneId(result.data.sceneId);
                 const _timer = window.setInterval(async () => {
                     const scanStateResult: ServerResult<CheckScanStateResult> = await (await fetch(`${BASE_URL}/check_scan_state?sceneId=${result.data.sceneId}`)).json();
                     // 扫码成功，跳转首页
-                    if (scanStateResult.data.state == 2) {
+                    if (scanStateResult.data.state == 1) {
                         window.clearInterval(timer?.current);
-                        redirect('/');
+                        router.push('/');
+                        update({name: 'AAron'})
                     }
                 }, 3000);
                 timer.current = _timer;

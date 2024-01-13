@@ -20,6 +20,10 @@ export const {
 } = NextAuth({
     secret: 'alkdsjfklasjdlk1',
     providers: [GitHub],
+
+    session: {
+        strategy: 'jwt'
+    },
     callbacks: {
         jwt(params) {
             // jwt({ token, profile }) {
@@ -38,11 +42,12 @@ export const {
             return session
         },
         authorized({ request, auth }) {
-            // const { pathname } = request.nextUrl;
-            // if (pathname == "/sign-in") {
-                // return true;
-            // }
-            return true
+            console.log('authorized', auth);
+            const { pathname } = request.nextUrl;
+            if (pathname == "/sign-in") {
+                return true;
+            }
+            // return true
             // const response = await fetch(`${BASE_URL}/check_session`, {
                 // method: "GET",
                 // cache: 'no-cache'
@@ -51,7 +56,7 @@ export const {
                 // return false;
             // }
             // return true;
-            // return !!auth?.user // this ensures there is a logged in user for -every- request
+            return !!auth?.user // this ensures there is a logged in user for -every- request
             // return true;
         },
     },
