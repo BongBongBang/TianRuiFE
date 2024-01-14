@@ -21,35 +21,30 @@ export const {
     providers: [{
         id: 'official-account',
         name: '公众号登录',
+        issuer: 'tian-rui',
         type: 'oauth',
         checks: ['none'],
-        authorization: 'http://localhost:8080/check_scan_state?sceneId=1',
-        token: "http://localhost:8080/check_scan_state",
+        token: `${BASE_URL}/oauth/token`,
         clientId: 'next',
         clientSecret: 'next-secret',
-        userinfo: {
-            url: 'http://localhost:8080/check_scan_state?sceneId=3',
-            async request(context : any) {
-                console.log(context);
-            }
-        }
+        userinfo: `${BASE_URL}/oauth/userinfo`,
     }],
-
     session: {
         strategy: 'jwt'
     },
     callbacks: {
-        jwt(params) {
-            // jwt({ token, profile }) {
-            console.log('jwt---\n', params);
-            return params.token
-            // if (profile) {
-            //   token.id = profile.id
-            //   token.image = profile.avatar_url || profile.picture
-            // return token
+        // jwt(params) {
+        jwt({ token, profile }) {
+            console.log('jwt---\n', profile);
+            if (profile) {
+                token.id = profile.id
+                token.image = profile.avatar_url || profile.picture
+            }
+            return token
         },
         // This callback is called whenever a session is checked
         session: ({ session, token }) => {
+            console.log('session-here--\n', session, token);
             if (session?.user && token?.id) {
                 session.user.id = String(token.id)
             }
@@ -63,18 +58,18 @@ export const {
             console.log('authorized', pathname);
             // return true
             // const response = await fetch(`${BASE_URL}/check_session`, {
-                // method: "GET",
-                // cache: 'no-cache'
+            // method: "GET",
+            // cache: 'no-cache'
             // });
             // if (401 == response.status) {
-                // return false;
+            // return false;
             // }
             // return true;
             return !!auth?.user // this ensures there is a logged in user for -every- request
             // return true;
         },
     },
-    // pages: {
-    //     signIn: '/sign-in'
-    // }
+    pages: {
+        signIn: '/sign-in'
+    }
 })

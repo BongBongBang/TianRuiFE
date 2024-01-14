@@ -35,7 +35,7 @@ export function LoginQrCodeForm({
 
         const initQrCode = async () => {
 
-            const response = await fetch(`${BASE_URL}/fetch_qr_code`, {
+            const response = await fetch(`${BASE_URL}/oauth/fetch_qr_code`, {
                 method: 'GET'
             })
             const result: ServerResult<FetchQrCodeResult> = await response.json();
@@ -43,11 +43,14 @@ export function LoginQrCodeForm({
             if (result.code == 0) {
                 setQrCode(result.data.url);
                 const _timer = window.setInterval(async () => {
-                    const scanStateResult: ServerResult<CheckScanStateResult> = await (await fetch(`${BASE_URL}/check_scan_state?sceneId=${result.data.sceneId}`)).json();
-                    // 扫码成功，跳转首页
+                    const scanStateResult: ServerResult<CheckScanStateResult> = await (await fetch(`${BASE_URL}/oauth/check_scan_state?sceneId=${result.data.sceneId}`)).json();
+                    // 扫码成功，跳转首页，即OAuth2.0 callback阶段
                     if (scanStateResult.data.state == 1) {
                         window.clearInterval(timer?.current);
-                        router.push('/');
+                        const callbackRet = await fetch(`/api/auth/callback/official-account?code=${result.data.sceneId}`, {
+                            method: 'POST'
+                        });
+                        console.log('callbackRet', callbackRet.json());
                     }
                 }, 3000);
                 timer.current = _timer;
