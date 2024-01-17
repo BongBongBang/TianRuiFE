@@ -12,7 +12,7 @@ export const runtime = 'edge'
 export async function POST(req: Request) {
     const json = await req.json()
     const { idGt, idLt } = json
-    const result = (await fetch(`http://47.104.74.127:8080/fetch_comment?idGt=${idGt}&idLt=${idLt}`, {method: 'GET'}));
+    const result = (await fetch(`http://mng.1jtec.com:8080/fetch_comment?idGt=${idGt}&idLt=${idLt}`, {method: 'GET'}));
     const array = await result.json();
 
     for (let i = 0; i < array.length; i++) {
@@ -33,7 +33,7 @@ export async function POST(req: Request) {
             "scriptId": item.ScriptId,
             "evaluateTextContent": convertedContent
         }]
-        const result = await fetch(`http://47.104.74.127:8080/save_converts`, {
+        const result = await fetch(`http://mng.1jtec.com:8080/save_converts`, {
             method: 'POST',
             body: JSON.stringify(body)
         });
