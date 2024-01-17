@@ -13,6 +13,7 @@ export async function POST(req: Request) {
     const json = await req.json()
     const { idGt, idLt } = json
     const result = (await fetch(`http://mng.1jtec.com:8080/fetch_comment?idGt=${idGt}&idLt=${idLt}`, {method: 'GET'}));
+    console.log('result', result);
     const array = await result.json();
 
     for (let i = 0; i < array.length; i++) {
