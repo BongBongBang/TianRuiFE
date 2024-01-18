@@ -3,7 +3,7 @@ import OpenAI from 'openai'
 import { kv } from '@vercel/kv'
 
 const openai = new OpenAI({
-    apiKey: "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"
+    apiKey: process.env.OPENAI_API_KEY
   })
   
 export const runtime = 'edge'
