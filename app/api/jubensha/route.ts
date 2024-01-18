@@ -12,7 +12,7 @@ export const runtime = 'edge'
 export async function POST(req: Request) {
     const json = await req.json()
     const { idGt, idLt } = json
-    const result = (await fetch(`http://mng.1jtec.com:8080/fetch_comment?idGt=${idGt}&idLt=${idLt}`, {method: 'GET'}));
+    const result = (await fetch(`http://go.1jtec.com/fetch_comment?idGt=${idGt}&idLt=${idLt}`, {method: 'GET'}));
     console.log('result\n', await result.text());
     // const array = await result.body;
 
