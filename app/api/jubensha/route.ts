@@ -18,7 +18,7 @@ export async function POST(req: Request) {
     for (let i = 0; i < array.length; i++) {
 
         const item = array[i]
-        console.log('Start ', item.ScriptEvaluateId); 
+
         const messages : any = [{role:'user', content: item.EvaluateTextContent}];
         const res = await openai.chat.completions.create({
             model: 'gpt-3.5-turbo',
@@ -40,6 +40,7 @@ export async function POST(req: Request) {
         if (result.ok) {
             await kv.set('latest', item.ScriptEvaluateId)
         }
+        console.log('Success ', item.ScriptEvaluateId); 
     }
 
     return NextResponse.json({});
